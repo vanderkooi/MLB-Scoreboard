@@ -15,6 +15,8 @@ away_team = " "
 home_team = " "
 score_line = "R   H   E"
 template_innings = "      " + "1   " + "2   " + "3   " + "4   " + "5   " + "6   " + "7   " + "8   " + "9   "
+current_month = "month_" + time.strftime("%m") + "/"
+current_day = "day_" + time.strftime("%d") + "/"
 
 info = AdditionalGameInfo
 
@@ -28,8 +30,6 @@ def main():
 
 
 def generator(team):  # generates XML page and parser for given team on current day
-    current_month = "month_" + time.strftime("%m") + "/"
-    current_day = "day_" + time.strftime("%d") + "/"
     url = "http://gd2.mlb.com/components/game/mlb/year_2016/" + current_month + current_day
     game = find_team(grab_links(url), team)
     xml_file = url + game.strip() + "linescore.xml"
@@ -61,14 +61,14 @@ def find_team(links, team):  # function to find baseball game
     main()
 
 
-def parseXml(xml_file):  # sets up XML file to be parsed
+def setupXmlParser(xml_file):  # sets up XML file to be parsed
     response = urllib.urlopen(xml_file)
     tree = ET.parse(response)
     root = tree.getroot()
     parser(root)
 
 
-def parser(root):  # parses score, current batter, count, and last play
+def xmlParser(root):  # parses score, current batter, count, and last play
     global away_team, home_team, score_line, template_innings
     away_team = root.get('away_name_abbrev') + "  "
     home_team = root.get('home_name_abbrev') + "  "
