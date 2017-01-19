@@ -9,7 +9,7 @@ import AdditionalGameInfo
 from bs4 import BeautifulSoup
 from blessings import Terminal
 
-# sets up blessings terminal for style
+
 t = Terminal()
 away_team = " "
 home_team = " "
@@ -24,32 +24,33 @@ info = AdditionalGameInfo
 def main():
     try:
         team = raw_input("Please select an MLB team: ")
-        generator(team)
+        url = url_generator(team)
+        xml_file = xml_generator(url)
+        parseXml(xml_file)
     except Exception, e:
         print e
 
 
-def generator(team):  # generates XML page and parser for given team on current day
-    url = "http://gd2.mlb.com/components/game/mlb/year_2016/" + current_month + current_day
+def url_generator(team): 
+    return url = "http://gd2.mlb.com/components/game/mlb/year_2016/" + current_month + current_day
+
+def xml_generator(url):
     game = find_team(grab_links(url), team)
-    xml_file = url + game.strip() + "linescore.xml"
-    parseXml(xml_file)
+    return url + game.strip() + "linescore.xml"
 
-
-def grab_links(url):  # returning all links from given URL
+def grab_links(url):  
     game_page = requests.get(url)
     soup = BeautifulSoup(game_page.content, "lxml")
-    links = soup.find_all("a")  # finds all of the links on Gameday site
+    links = soup.find_all("a") 
     page_links = []
 
-    # adding all of the links to a list
     for link in links:
         page_links.append(link.text)
 
     return page_links
 
 
-def find_team(links, team):  # function to find baseball game
+def find_team(links, team):  
     for link in links:
         if re.search(team + 'mlb', link) is not None:
             return str(link)
@@ -61,14 +62,15 @@ def find_team(links, team):  # function to find baseball game
     main()
 
 
-def setupXmlParser(xml_file):  # sets up XML file to be parsed
+def parseXml(xml_file):  
     response = urllib.urlopen(xml_file)
     tree = ET.parse(response)
     root = tree.getroot()
     parser(root)
 
 
-def xmlParser(root):  # parses score, current batter, count, and last play
+
+def xmlParser(root):  
     global away_team, home_team, score_line, template_innings
     away_team = root.get('away_name_abbrev') + "  "
     home_team = root.get('home_name_abbrev') + "  "
