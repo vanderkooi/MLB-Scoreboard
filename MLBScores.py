@@ -114,7 +114,7 @@ def xmlParser(root):
         print game_time
         print t.bold(away_team), info.team_win_loss(root, 'away'), info.probable_starters(root, 'away')
         print t.bold(home_team), info.team_win_loss(root, 'home'), info.probable_starters(root, 'home')
-        print t.red("This team's game hasn't started.")
+        print t.red("This game will start shortly")
         main()
 
 
