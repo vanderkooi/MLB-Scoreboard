@@ -32,7 +32,7 @@ def main():
 
 
 def url_generator(team): 
-    return url = "http://gd2.mlb.com/components/game/mlb/year_2016/" + current_month + current_day
+    return "http://gd2.mlb.com/components/game/mlb/year_2016/" + current_month + current_day
 
 def xml_generator(url):
     game = find_team(grab_links(url), team)
@@ -114,7 +114,7 @@ def xmlParser(root):
         print game_time
         print t.bold(away_team), info.team_win_loss(root, 'away'), info.probable_starters(root, 'away')
         print t.bold(home_team), info.team_win_loss(root, 'home'), info.probable_starters(root, 'home')
-        print t.red("This team's game has not yet begun.")
+        print t.red("This team's game hasn't started.")
         main()
 
 
