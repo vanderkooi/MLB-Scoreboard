@@ -33,7 +33,7 @@ def generator(team):  # generates XML page and parser for given team on current 
     url = "http://gd2.mlb.com/components/game/mlb/year_2016/" + current_month + current_day
     game = find_team(grab_links(url), team)
     xml_file = url + game.strip() + "linescore.xml"
-    setup_xml_parser(xml_file)
+    parseXml(xml_file)
 
 
 def grab_links(url):  # returning all links from given URL
@@ -49,8 +49,8 @@ def grab_links(url):  # returning all links from given URL
     return page_links
 
 
-def find_team(links_list, team):  # function to find baseball game
-    for link in links_list:
+def find_team(links, team):  # function to find baseball game
+    for link in links:
         if re.search(team + 'mlb', link) is not None:
             return str(link)
         else:
@@ -61,7 +61,7 @@ def find_team(links_list, team):  # function to find baseball game
     main()
 
 
-def setup_xml_parser(xml_file):  # sets up XML file to be parsed
+def parseXml(xml_file):  # sets up XML file to be parsed
     response = urllib.urlopen(xml_file)
     tree = ET.parse(response)
     root = tree.getroot()
